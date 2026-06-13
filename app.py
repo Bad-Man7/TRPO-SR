@@ -1,20 +1,23 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 import sqlite3
 
 app = Flask(__name__)
-
-# Маршрут для главной страницы
-@app.route('/')
-def index():
-    conn = get_db()
-    notes = conn.execute('SELECT * FROM notes').fetchall()
-    conn.close()
-    return render_template('index.html', notes=notes)
 
 def get_db():
     conn = sqlite3.connect('notes.db')
     conn.execute('CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY, title TEXT, content TEXT, tags TEXT)')
     return conn
+
+@app.route('/')
+def index():
+    tag_filter = request.args.get('tag')
+    conn = get_db()
+    if tag_filter:
+        notes = conn.execute('SELECT * FROM notes WHERE tags = ?', (tag_filter,)).fetchall()
+    else:
+        notes = conn.execute('SELECT * FROM notes').fetchall()
+    conn.close()
+    return render_template('index.html', notes=notes)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
@@ -27,11 +30,10 @@ def add():
         conn.execute('INSERT INTO notes (title, content, tags) VALUES (?, ?, ?)', (title, content, tags))
         conn.commit()
         conn.close()
-        return "Заметка сохранена! <a href='/'>Назад</a>"
+        return redirect('/')
         
     return render_template('add.html')
 
-# Маршрут для редактирования
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
     conn = get_db()
@@ -41,12 +43,11 @@ def edit(id):
         conn.commit()
         conn.close()
         return redirect('/')
-
+    
     note = conn.execute('SELECT * FROM notes WHERE id = ?', (id,)).fetchone()
     conn.close()
     return render_template('edit.html', note=note)
 
-# Маршрут для удаления
 @app.route('/delete/<int:id>')
 def delete(id):
     conn = get_db()
