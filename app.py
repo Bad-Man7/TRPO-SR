@@ -47,9 +47,13 @@ def edit(id):
     return render_template('edit.html', note=note)
 
 # Маршрут для удаления
-@app.route('/delete/<int:id>', methods=['POST'])
+@app.route('/delete/<int:id>')
 def delete(id):
-    return f"Удаление заметки номер {id}"
+    conn = get_db()
+    conn.execute('DELETE FROM notes WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
