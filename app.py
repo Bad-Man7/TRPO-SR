@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+import sqlite3
 
 app = Flask(__name__)
 
@@ -7,10 +8,25 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-# Маршрут для добавления заметки
+def get_db():
+    conn = sqlite3.connect('notes.db')
+    conn.execute('CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY, title TEXT, content TEXT, tags TEXT)')
+    return conn
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
-    return "Страница добавления заметки"
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        tags = request.form['tags']
+        
+        conn = get_db()
+        conn.execute('INSERT INTO notes (title, content, tags) VALUES (?, ?, ?)', (title, content, tags))
+        conn.commit()
+        conn.close()
+        return "Заметка сохранена! <a href='/'>Назад</a>"
+        
+    return render_template('add.html')
 
 # Маршрут для редактирования
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
