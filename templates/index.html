@@ -1,20 +1,59 @@
 <!DOCTYPE html>
 <html>
-<head><title>Мои заметки</title></head>
+<head>
+    <title>📝 Заметки с тегами</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 <body>
-    <h1>Заметки</h1>
-    <a href="/add">Добавить заметку</a>
-    <ul>
-        {% for note in notes %}
-            <li>
-                <strong>{{ note[1] }}</strong> (Теги: {{ note[3] }})<br>
-                {{ note[2] }}<br>
-                <a href="/edit/{{ note[0] }}">Редактировать</a> | 
-                <a href="/delete/{{ note[0] }}">Удалить</a>
-            </li>
+    <div class="container">
+        <h1>📝 Мои Заметки</h1>
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <a href="/add" class="btn">➕ Добавить заметку</a>
+        </div>
+        
+        {% if all_tags %}
+        <div class="tag-cloud">
+            <h3>🏷️ Все теги:</h3>
+            <div>
+                {% for tag in all_tags %}
+                    <a href="/?tag={{ tag }}">{{ tag }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if request.args.get('tag') %}
+        <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <p>🔍 Фильтр по тегу: <strong>{{ request.args.get('tag') }}</strong> 
+               [<a href="/" style="color: #e74c3c;">сбросить</a>]</p>
+        </div>
+        {% endif %}
+        
+        {% if notes %}
+            {% for note in notes %}
+            <div class="note-card">
+                <div class="note-title">{{ note[1] }}</div>
+                <div class="note-content">{{ note[2] }}</div>
+                {% if note[3] %}
+                <div class="tags">
+                    {% for tag in note[3].split() %}
+                        <a href="/?tag={{ tag }}" class="tag">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="actions">
+                    <a href="/edit/{{ note[0] }}" class="btn btn-secondary">✏️ Редактировать</a>
+                    <a href="/delete/{{ note[0] }}" class="btn btn-danger" onclick="return confirm('Удалить заметку?')">🗑️ Удалить</a>
+                </div>
+            </div>
+            {% endfor %}
         {% else %}
-            <li>Заметок пока нет.</li>
-        {% endfor %}
-    </ul>
+        <div class="empty-state">
+            <h2>📭 Пока нет заметок</h2>
+            <p>Создайте первую заметку, нажав кнопку выше!</p>
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>

@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head><title>Редактировать заметку</title></head>
+<head>
+    <title>✏️ Редактирование</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 <body>
-    <h1>Редактирование</h1>
-    <form method="POST" action="/edit/{{ note[0] }}">
-        <input type="text" name="title" value="{{ note[1] }}" required><br><br>
-        <textarea name="content" required>{{ note[2] }}</textarea><br><br>
-        <input type="text" name="tags" value="{{ note[3] }}"><br><br>
-        <button type="submit">Обновить</button>
-    </form>
-    <br>
-    <a href="/">Назад</a>
+    <div class="container">
+        <h1>✏️ Редактирование заметки</h1>
+        
+        <div class="form-container">
+            <form method="POST" action="/edit/{{ note[0] }}">
+                <div class="form-group">
+                    <label for="title">Заголовок:</label>
+                    <input type="text" id="title" name="title" value="{{ note[1] }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">Текст заметки:</label>
+                    <textarea id="content" name="content" required>{{ note[2] }}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tags">Теги:</label>
+                    <input type="text" id="tags" name="tags" value="{{ note[3] }}">
+                </div>
+                
+                <div style="text-align: center;">
+                    <button type="submit" class="btn">💾 Обновить</button>
+                    <a href="/" class="btn btn-secondary">↩️ Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
