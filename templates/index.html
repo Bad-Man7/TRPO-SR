@@ -13,6 +13,7 @@
             <h3>{{ note['title'] }}</h3>
             <p>{{ note['content'] }}</p>
             <p>Теги: <a href="/?tag={{ note['tags'] }}">{{ note['tags'] }}</a></p>
+            <a href="/edit/{{ note['id'] }}">Редактировать</a> | 
             <a href="/delete/{{ note['id'] }}">Удалить</a>
         </div>
     {% endfor %}
