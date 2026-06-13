@@ -53,3 +53,41 @@ def test_delete_note(client):
     # Удаляем
     response = client.get('/delete/1', follow_redirects=True)
     assert response.status_code == 200
+
+def test_search_functionality(client):
+    """Тест 6: Поиск по заголовку и тексту"""
+    # Добавляем заметки
+    client.post('/add', data={
+        'title': 'Работа проект',
+        'content': 'Важный проект',
+        'tags': 'работа'
+    })
+    client.post('/add', data={
+        'title': 'Личное дело',
+        'content': 'Личные заметки',
+        'tags': 'личное'
+    })
+    
+    # Ищем по слову "проект"
+    response = client.get('/search?q=проект')
+    assert response.status_code == 200
+    assert b'Работа проект' in response.data
+
+def test_filter_by_tag(client):
+    """Тест 7: Фильтрация по тегу"""
+    # Добавляем заметки с разными тегами
+    client.post('/add', data={
+        'title': 'Заметка 1',
+        'content': 'Текст 1',
+        'tags': 'работа'
+    })
+    client.post('/add', data={
+        'title': 'Заметка 2',
+        'content': 'Текст 2',
+        'tags': 'личное'
+    })
+    
+    # Фильтруем по тегу "работа"
+    response = client.get('/?tag=работа')
+    assert response.status_code == 200
+    assert b'Заметка 1' in response.data

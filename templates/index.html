@@ -1,32 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📝 Заметки с тегами</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>📝 Мои заметки</h1>
+        <h1>📝 Мои Заметки</h1>
         
-        <div style="text-align: center; margin-bottom: 30px;">
+        <div style="text-align: center; margin-bottom: 20px;">
             <a href="/add" class="btn">➕ Добавить заметку</a>
         </div>
         
+        <!-- Поиск -->
+        <div class="search-container">
+            <form action="/search" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="🔍 Поиск по заголовку и тексту..." class="search-input">
+                <button type="submit" class="btn">Найти</button>
+            </form>
+            {% if request.args.get('q') %}
+            <a href="/" class="btn btn-secondary">Сбросить</a>
+            {% endif %}
+        </div>
+        
+        <!-- Облако тегов -->
         {% if all_tags %}
         <div class="tag-cloud">
-            <h3>🏷️ Все теги:</h3>
-            <div>
-                {% for tag in all_tags %}
-                    <a href="/?tag={{ tag }}">{{ tag }}</a>
+            <h3>🏷️ Облако тегов:</h3>
+            <div class="tag-cloud-items">
+                {% for tag_item in all_tags %}
+                    <a href="/?tag={{ tag_item[0] }}" class="tag-popular" data-size="{{ tag_item[1] }}">
+                        {{ tag_item[0] }} ({{ tag_item[1] }})
+                    </a>
                 {% endfor %}
             </div>
         </div>
         {% endif %}
         
         {% if request.args.get('tag') %}
-        <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <div class="filter-info">
             <p>🔍 Фильтр по тегу: <strong>{{ request.args.get('tag') }}</strong> 
-               [<a href="/" style="color: #e74c3c;">сбросить</a>]</p>
+               [<a href="/" class="reset-link">сбросить</a>]</p>
         </div>
         {% endif %}
         
@@ -34,6 +50,7 @@
             {% for note in notes %}
             <div class="note-card">
                 <div class="note-title">{{ note[1] }}</div>
+                <div class="note-date">📅 {{ note[4] }}</div>
                 <div class="note-content">{{ note[2] }}</div>
                 {% if note[3] %}
                 <div class="tags">
@@ -55,5 +72,16 @@
         </div>
         {% endif %}
     </div>
+    
+    <script>
+        // Динамический размер тегов через JavaScript
+        document.querySelectorAll('.tag-popular').forEach(function(tag) {
+            var count = parseInt(tag.getAttribute('data-size'));
+            var size = 12 + count * 4;
+            var opacity = 0.6 + count * 0.08;
+            tag.style.fontSize = size + 'px';
+            tag.style.opacity = opacity;
+        });
+    </script>
 </body>
 </html>
