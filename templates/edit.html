@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
+<head><title>Редактировать заметку</title></head>
 <body>
     <h1>Редактирование</h1>
-    <form method="POST">
-        <input type="text" name="title" value="{{ note['title'] }}" required><br>
-        <textarea name="content">{{ note['content'] }}</textarea><br>
-        <input type="text" name="tags" value="{{ note['tags'] }}"><br>
-        <button type="submit">Сохранить изменения</button>
+    <form method="POST" action="/edit/{{ note[0] }}">
+        <input type="text" name="title" value="{{ note[1] }}" required><br><br>
+        <textarea name="content" required>{{ note[2] }}</textarea><br><br>
+        <input type="text" name="tags" value="{{ note[3] }}"><br><br>
+        <button type="submit">Обновить</button>
     </form>
+    <br>
+    <a href="/">Назад</a>
 </body>
 </html>

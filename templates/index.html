@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Мои заметки</title>
-</head>
+<head><title>Мои заметки</title></head>
 <body>
-    <h1>Мои заметки</h1>
-    <a href="/add">Добавить заметку</a> | <a href="/">Все заметки</a>
-    <hr>
-    {% for note in notes %}
-        <div style="border:1px solid #ccc; padding:10px; margin:10px 0;">
-            <h3>{{ note['title'] }}</h3>
-            <p>{{ note['content'] }}</p>
-            <p>Теги: <a href="/?tag={{ note['tags'] }}">{{ note['tags'] }}</a></p>
-            <a href="/edit/{{ note['id'] }}">Редактировать</a> | 
-            <a href="/delete/{{ note['id'] }}">Удалить</a>
-        </div>
-    {% endfor %}
+    <h1>Заметки</h1>
+    <a href="/add">Добавить заметку</a>
+    <ul>
+        {% for note in notes %}
+            <li>
+                <strong>{{ note[1] }}</strong> (Теги: {{ note[3] }})<br>
+                {{ note[2] }}<br>
+                <a href="/edit/{{ note[0] }}">Редактировать</a> | 
+                <a href="/delete/{{ note[0] }}">Удалить</a>
+            </li>
+        {% else %}
+            <li>Заметок пока нет.</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

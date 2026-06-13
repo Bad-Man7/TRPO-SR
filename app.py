@@ -25,13 +25,11 @@ def add():
         title = request.form['title']
         content = request.form['content']
         tags = request.form['tags']
-        
         conn = get_db()
         conn.execute('INSERT INTO notes (title, content, tags) VALUES (?, ?, ?)', (title, content, tags))
         conn.commit()
         conn.close()
         return redirect('/')
-        
     return render_template('add.html')
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -43,7 +41,6 @@ def edit(id):
         conn.commit()
         conn.close()
         return redirect('/')
-    
     note = conn.execute('SELECT * FROM notes WHERE id = ?', (id,)).fetchone()
     conn.close()
     return render_template('edit.html', note=note)

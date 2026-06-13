@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Добавить заметку</title>
-</head>
+<head><title>Добавить заметку</title></head>
 <body>
     <h1>Новая заметка</h1>
-    <form method="POST">
-        <input type="text" name="title" placeholder="Заголовок" required><br>
-        <textarea name="content" placeholder="Текст заметки"></textarea><br>
-        <input type="text" name="tags" placeholder="Теги (через запятую)"><br>
+    <form method="POST" action="/add">
+        <input type="text" name="title" placeholder="Заголовок" required><br><br>
+        <textarea name="content" placeholder="Текст заметки" required></textarea><br><br>
+        <input type="text" name="tags" placeholder="Теги (через запятую)"><br><br>
         <button type="submit">Сохранить</button>
     </form>
     <br>
