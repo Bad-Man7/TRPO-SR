@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head><title>Добавить заметку</title></head>
+<head>
+    <title>➕ Новая заметка</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 <body>
-    <h1>Новая заметка</h1>
-    <form method="POST" action="/add">
-        <input type="text" name="title" placeholder="Заголовок" required><br><br>
-        <textarea name="content" placeholder="Текст заметки" required></textarea><br><br>
-        <input type="text" name="tags" placeholder="Теги (через запятую)"><br><br>
-        <button type="submit">Сохранить</button>
-    </form>
-    <br>
-    <a href="/">Назад</a>
+    <div class="container">
+        <h1>➕ Новая заметка</h1>
+        
+        <div class="form-container">
+            <form method="POST" action="/add">
+                <div class="form-group">
+                    <label for="title">Заголовок:</label>
+                    <input type="text" id="title" name="title" placeholder="Введите заголовок..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">Текст заметки:</label>
+                    <textarea id="content" name="content" placeholder="Введите текст заметки..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tags">Теги:</label>
+                    <input type="text" id="tags" name="tags" placeholder="Например: работа важное идея">
+                    <small style="color: #7f8c8d; display: block; margin-top: 5px;">💡 Введите теги через пробел или запятую</small>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button type="submit" class="btn">💾 Сохранить</button>
+                    <a href="/" class="btn btn-secondary">↩️ Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
