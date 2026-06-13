@@ -6,7 +6,10 @@ app = Flask(__name__)
 # Маршрут для главной страницы
 @app.route('/')
 def index():
-    return render_template('index.html')
+    conn = get_db()
+    notes = conn.execute('SELECT * FROM notes').fetchall()
+    conn.close()
+    return render_template('index.html', notes=notes)
 
 def get_db():
     conn = sqlite3.connect('notes.db')
