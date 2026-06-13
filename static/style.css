@@ -241,3 +241,74 @@ textarea {
 .note-card {
     animation: fadeIn 0.5s ease;
 }
+
+/* Контейнер поиска */
+.search-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.search-form {
+    display: inline-block;
+}
+
+.search-input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    width: 300px;
+    margin-right: 10px;
+}
+
+/* Облако тегов */
+.tag-cloud-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.tag-popular {
+    display: inline-block;
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.tag-popular:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+
+/* Информация о фильтре */
+.filter-info {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.reset-link {
+    color: #e74c3c;
+}
+
+/* Дата заметки */
+.note-date {
+    color: #7f8c8d;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 0.9em;
+}
+
+.search-form {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-input {
+    width: 250px !important;
+}
