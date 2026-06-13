@@ -34,7 +34,17 @@ def add():
 # Маршрут для редактирования
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    return f"Редактирование заметки номер {id}"
+    conn = get_db()
+    if request.method == 'POST':
+        conn.execute('UPDATE notes SET title=?, content=?, tags=? WHERE id=?', 
+                     (request.form['title'], request.form['content'], request.form['tags'], id))
+        conn.commit()
+        conn.close()
+        return redirect('/')
+
+    note = conn.execute('SELECT * FROM notes WHERE id = ?', (id,)).fetchone()
+    conn.close()
+    return render_template('edit.html', note=note)
 
 # Маршрут для удаления
 @app.route('/delete/<int:id>', methods=['POST'])
